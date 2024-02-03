@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keda-deployment
+  labels:
+    app: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      serviceAccountName: kead-sa
+      containers:
+        - name: container
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Development
+            - name: QueueUrl
+              value: <MY_QUEUE_URL>
+          image: <MY_ACCOUNT_ID>.dkr.ecr.<MY_REGION>.amazonaws.com/myrepo:1.0
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP

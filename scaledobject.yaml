@@ -1,0 +1,16 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: keda-so
+spec:
+  minReplicaCount: 1
+  maxReplicaCount: 15  
+  scaleTargetRef:
+    name: keda-deployment
+  triggers:
+  - type: aws-sqs-queue
+    metadata:
+      queueURL: <MY_QUEUE_URL>
+      queueLength: "5"
+      awsRegion: <MY_REGION>
+      identityOwner: operator
